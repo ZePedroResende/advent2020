@@ -20,15 +20,13 @@ fn main() {
 
         let matched = re.captures(trimmed).unwrap();
 
-        let min = matched.get(1).unwrap().as_str().parse::<usize>().unwrap() - 1;
-        let max = matched.get(2).unwrap().as_str().parse::<usize>().unwrap() - 1;
-        let letter = matched.get(3).unwrap().as_str().chars().nth(0).unwrap();
+        let min = matched.get(1).unwrap().as_str().parse::<usize>().unwrap();;
+        let max = matched.get(2).unwrap().as_str().parse::<usize>().unwrap();;
+        let letter = matched.get(3).unwrap().as_str();
         let password = matched.get(4).unwrap().as_str();
+        let letter_count = password.matches(letter).count();
 
-        let first = password.chars().nth(min).unwrap();
-        let last = password.chars().nth(max).unwrap();
-
-        if (first == letter) ^ (last == letter) {
+        if (min <= letter_count) && (letter_count <= max) {
             count += 1;
         }
     }
