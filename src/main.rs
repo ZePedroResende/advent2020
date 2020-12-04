@@ -1,6 +1,22 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
+
+struct Passport {
+    cid: Option<str>
+}
+
+struct NorthPole {
+    byr: Option<str>
+    iyr:
+    eyr:
+    hgt:
+    hcl:
+    ecl:
+    pid:
+
+}
+
 fn calculate_colisions(right: usize, down: usize, lines: Vec<String>) -> i32 {
     let mut count = 0;
     let mut index = 0;
