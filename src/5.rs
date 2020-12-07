@@ -1,14 +1,13 @@
-use std::collections::HashSet;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
-fn calculate_id(trimmed: String) -> (isize, isize) {
+fn calculate_id(trimmed: String) -> isize {
     let number = isize::from_str_radix(&trimmed, 2).unwrap();
     let row = number >> 3;
 
     let seat = number & 7;
 
-    (row, seat)
+    row * 8 + seat
 }
 
 fn main() {
@@ -17,7 +16,8 @@ fn main() {
     let file = File::open(filename).unwrap();
     let reader = BufReader::new(file);
 
-    let set = HashSet::new();
+    let mut result;
+    let mut id = 0;
 
     for line in reader.lines() {
         // Show the line and its number.
@@ -34,7 +34,8 @@ fn main() {
             })
             .collect();
 
-        set.insert(calculate_id(trimmed));
+        result = calculate_id(trimmed);
+        id = if result > id { result } else { id };
     }
 
     println!("{}", id);
