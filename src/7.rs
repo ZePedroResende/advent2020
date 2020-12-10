@@ -1,5 +1,5 @@
 use petgraph::graphmap::GraphMap;
-use petgraph::visit::{Bfs, DfsPostOrder};
+use petgraph::visit::Bfs;
 use regex::Regex;
 use std::collections::HashMap;
 use std::fs::File;
@@ -75,21 +75,24 @@ impl Policy {
 
     fn count(&mut self) -> usize {
         let id = self.hash.get("shiny gold".into()).unwrap();
+        let mut bfs = Bfs::new(&self.graph, *id);
 
-        for n in self.graph.neighbors(*id) {
-            self.count += self.graph.edge_weight(*id, n).unwrap() * self.count_id(&n);
+        while let Some(nx) = bfs.next(&self.graph) {
+            /*
+            let neighbors = graph.neighbors(nx);
+            count += neighbors
+                .map(|node| graph.edge_weight(nx, node))
+                .sum()
+                .unwrap();
+                */
+            for n in self.graph.neighbors(nx) {
+                //                    if bfs.stack.contains(&n) {
+                self.count += self.graph.edge_weight(nx, n).unwrap();
+                //                   }
+            }
         }
 
         self.count
-    }
-
-    fn count_id(&self, id: &usize) -> usize {
-        let mut count = 1;
-        for n in self.graph.neighbors(*id) {
-            count += self.graph.edge_weight(*id, n).unwrap() * self.count_id(&n);
-            //                   }
-        }
-        count
     }
 }
 
